@@ -12,7 +12,6 @@
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": 1,
     "camelcase": 0,
-    "allowForLoopAfterthoughts": 1,
     "react/forbid-prop-types": 0,
     "react/jsx-filename-extension": [
       1,
