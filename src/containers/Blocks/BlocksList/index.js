@@ -11,6 +11,12 @@ const MainWrapper = styled.div`
 
 const BlocksWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+`;
+
+const StyledBlockList = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const BlocksList = () => {
@@ -21,11 +27,11 @@ const BlocksList = () => {
         {blocks.map((item, index) => {
           const idx = index;
           return (
-            <div key={idx}>
+            <StyledBlockList key={idx}>
               {item.map(({ color, id }, i) => (
                 <Block key={id} color={color} id={id} arrayIndex={idx} elementIndex={i} />
               ))}
-            </div>
+            </StyledBlockList>
           );
         })}
       </BlocksWrapper>
