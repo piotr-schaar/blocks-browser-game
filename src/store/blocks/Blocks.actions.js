@@ -1,3 +1,4 @@
+import uuid from 'uuid';
 import { CREATE_BLOCKS_BOARD, RESET_BLOCKS_BOARD } from 'store/blocks/Blocks.types';
 import colors from 'utils/boxColors';
 
@@ -10,7 +11,10 @@ export const createBlocks = (startGame = true) => dispatch => {
     for (let j = 0; j < rows; j += 1) {
       let blocksRow = [];
       for (let i = 0; i < columns; i += 1) {
-        const newColor = getRandomColor(boxColors);
+        const newColor = {
+          id: uuid(),
+          color: getRandomColor(boxColors),
+        };
         blocksRow = [...blocksRow, newColor];
       }
       blocksArr = [...blocksArr, blocksRow];

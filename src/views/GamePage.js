@@ -2,17 +2,23 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBlocks } from 'store/blocks/Blocks.actions';
 
+import Blocks from 'containers/Blocks/BlocksList';
+import Heading from 'components/Layout/Heading';
+
 const GamePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(createBlocks());
+    dispatch(createBlocks('startGame'));
   }, []);
 
   return (
-    <div>
-      <h1>hello from game page</h1>
-    </div>
+    <>
+      <Heading bold size="h1">
+        Blocks Game
+      </Heading>
+      <Blocks />
+    </>
   );
 };
 
