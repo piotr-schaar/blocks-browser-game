@@ -14,7 +14,7 @@ const rows = 6;
 export const createBlocks = (startGame = true) => dispatch => {
   const generateBlocks = () => {
     const boxColors = Object.values(colors);
-    let blocksArr = [];
+    let board = [];
     for (let j = 0; j < rows; j += 1) {
       let blocksRow = [];
       for (let i = 0; i < columns; i += 1) {
@@ -24,13 +24,12 @@ export const createBlocks = (startGame = true) => dispatch => {
         };
         blocksRow = [...blocksRow, newColor];
       }
-      blocksArr = [...blocksArr, blocksRow];
+      board = [...board, blocksRow];
     }
-    return blocksArr;
+    return board;
   };
 
   // generating blocks based on startGame condition
-
   if (startGame) {
     dispatch({ type: RESET_BLOCKS_BOARD });
     dispatch({ type: CREATE_BLOCKS_BOARD, payload: generateBlocks() });
