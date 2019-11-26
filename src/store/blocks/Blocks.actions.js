@@ -36,12 +36,15 @@ export const createBlocks = (startGame = true) => dispatch => {
   }
 };
 const checkDirections = (board, r, c) => {
-  const top = board[r - 1] === undefined ? null : board[r - 1][c].color;
-  const bottom = board[r + 1] === undefined ? null : board[r + 1][c].color;
-  const left = board[r][c - 1] === undefined ? null : board[r][c - 1].color;
-  const right = board[r][c + 1] === undefined ? null : board[r][c + 1].color;
+  const top = board[r - 1] !== undefined && { row: r - 1, column: c };
+  const bottom = board[r + 1] !== undefined && { row: r + 1, column: c };
+  const left = board[r][c - 1] !== undefined && { row: r, column: c - 1 };
+  const right = board[r][c + 1] !== undefined && { row: r, column: c + 1 };
 
-  const directionsWithMatches = [top, bottom, left, right].filter(dir => dir === board[r][c].color);
+  const directionsWithMatches = [top, bottom, left, right]
+    .filter(dir => dir instanceof Object)
+    .filter(({ row, column }) => board[row][column].color === board[r][c].color);
+
   return directionsWithMatches;
 };
 export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
@@ -66,10 +69,26 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 
-export const checkBoxesMatches = clickedBlock => (dispatch, getState) => {
+export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getState) => {
   const {
     BlocksReducer: { blocks },
   } = getState();
+
+  const matches = checkDirections(blocks, arrayIndex, elementIndex);
+
+  const getExtendedMatches = () => {
+    let extendedMatches = [];
+    for (let i = 0; i < matches.length; i += 1) {
+      const { row, column } = matches[i];
+      extendedMatches = [...matches, ...extendedMatches, ...checkDirections(blocks, row, column)];
+    }
+    const removeDuplicates = extendedMatches.filter(
+      (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
+    );
+    console.log('TCL: getExtentedMatches -> final', removeDuplicates);
+  };
+
+  getExtendedMatches();
 };
 
 // };
