@@ -8,8 +8,11 @@ import colors from 'utils/boxColors';
 
 const getRandomColor = colorsArr => colorsArr[Math.floor(Math.random() * colorsArr.length)];
 
+const columns = 12;
+const rows = 6;
+
 export const createBlocks = (startGame = true) => dispatch => {
-  const generateBlocks = (rows, columns) => {
+  const generateBlocks = () => {
     const boxColors = Object.values(colors);
     let blocksArr = [];
     for (let j = 0; j < rows; j += 1) {
@@ -26,93 +29,48 @@ export const createBlocks = (startGame = true) => dispatch => {
     return blocksArr;
   };
 
-  const columns = 12;
-  const rows = startGame ? 6 : 1;
-
   // generating blocks based on startGame condition
 
   if (startGame) {
     dispatch({ type: RESET_BLOCKS_BOARD });
-    dispatch({ type: CREATE_BLOCKS_BOARD, payload: generateBlocks(rows, columns) });
-  } else {
-    dispatch({
-      type: CREATE_BLOCKS_BOARD,
-      payload: generateBlocks(rows, columns),
-    });
+    dispatch({ type: CREATE_BLOCKS_BOARD, payload: generateBlocks() });
   }
 };
+const checkDirections = (board, r, c) => {
+  const top = board[r - 1] === undefined ? null : board[r - 1][c].color;
+  const bottom = board[r + 1] === undefined ? null : board[r + 1][c].color;
+  const left = board[r][c - 1] === undefined ? null : board[r][c - 1].color;
+  const right = board[r][c + 1] === undefined ? null : board[r][c + 1].color;
 
-export const blockClicked = (arrIndex, elIndex) => (dispatch, getState) => {
+  const directionsWithMatches = [top, bottom, left, right].filter(dir => dir === board[r][c].color);
+  return directionsWithMatches;
+};
+export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   const {
     BlocksReducer: { blocks },
   } = getState();
 
-  const currentColor = blocks[arrIndex][elIndex].color;
+  let isPossibleMatches = false;
 
-  const checkMatches = () => {
-    const checkDirections = () => {
-      let matchedDirections = [];
-      const blockTop = {
-        row: arrIndex - 1,
-        column: elIndex,
-        getColor() {
-          return blocks[this.row] === undefined ? null : blocks[this.row][this.column].color;
-        },
-      };
-      const blockBottom = {
-        row: arrIndex + 1,
-        column: elIndex,
-        getColor() {
-          return blocks[this.row] === undefined ? null : blocks[this.row][this.column].color;
-        },
-      };
-      const blockLeft = {
-        row: arrIndex,
-        column: elIndex - 1,
-        getColor() {
-          return blocks[this.row][this.column] === undefined
-            ? null
-            : blocks[this.row][this.column].color;
-        },
-      };
-
-      const blockRight = {
-        row: arrIndex,
-        column: elIndex + 1,
-        getColor() {
-          return blocks[this.row][this.column] === undefined
-            ? null
-            : blocks[this.row][this.column].color;
-        },
-      };
-
-      const blocksDirections = [blockTop, blockBottom, blockLeft, blockRight];
-
-      const newMatch = (rowIdx, columnIdx) => {
-        return {
-          rowIdx,
-          columnIdx,
-        };
-      };
-
-      blocksDirections.forEach(({ getColor, row, column }) => {
-        if (getColor() === currentColor) {
-          matchedDirections = [...matchedDirections, newMatch(row, column)];
+  const getDirections = () => {
+    for (let j = 0; j < rows; j += 1) {
+      for (let i = 0; i < columns; i += 1) {
+        if (checkDirections(blocks, j, i).length > 0) {
+          isPossibleMatches = true;
         }
-      });
-
-      return matchedDirections;
-    };
-
-    checkDirections();
+      }
+    }
   };
 
-  checkMatches();
-  //   dispatch({
-  //     type: CHECK_POSSIBILITY,
-  //     payload: {
-  //       arrIndex,
-  //       elIndex,
-  //     },
-  //   });
+  getDirections();
+
+  dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
+
+export const checkBoxesMatches = clickedBlock => (dispatch, getState) => {
+  const {
+    BlocksReducer: { blocks },
+  } = getState();
+};
+
+// };
