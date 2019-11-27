@@ -2,6 +2,7 @@ import {
   CREATE_BLOCKS_BOARD,
   RESET_BLOCKS_BOARD,
   CHECK_POSSIBILITY,
+  DELETE_CLICKED_BLOCKS,
 } from 'store/blocks/Blocks.types';
 
 const INITIAL_STATE = {
@@ -25,6 +26,10 @@ const blocksReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         possiblesMovies: action.payload,
+      };
+    case DELETE_CLICKED_BLOCKS:
+      return {
+        ...state,
       };
     default:
       return state;

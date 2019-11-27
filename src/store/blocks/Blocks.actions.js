@@ -3,6 +3,7 @@ import {
   CREATE_BLOCKS_BOARD,
   RESET_BLOCKS_BOARD,
   CHECK_POSSIBILITY,
+  DELETE_CLICKED_BLOCKS,
 } from 'store/blocks/Blocks.types';
 import colors from 'utils/boxColors';
 
@@ -69,6 +70,33 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 
+const fillEmptyBlocksFrom = blocks => {
+  const board = blocks;
+
+  const getUpperColor = () => {
+    for (let j = 1; j < rows; j += 1) {
+      for (let i = 0; i < columns; i += 1) {
+        if (board[j][i].color === 'white') {
+          board[j][i].color = blocks[j - 1][i].color;
+          board[j - 1][i].color = 'white';
+        }
+      }
+    }
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const element of board[0]) {
+      if (element.color === 'white') {
+        const boxColors = Object.values(colors);
+        element.color = getRandomColor(boxColors);
+      }
+    }
+  };
+
+  for (let j = 1; j < rows; j += 1) {
+    getUpperColor();
+  }
+};
+
 export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getState) => {
   const {
     BlocksReducer: { blocks },
@@ -76,19 +104,24 @@ export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getSta
 
   const matches = checkDirections(blocks, arrayIndex, elementIndex);
 
-  const getExtendedMatches = () => {
-    let extendedMatches = [];
-    for (let i = 0; i < matches.length; i += 1) {
-      const { row, column } = matches[i];
-      extendedMatches = [...matches, ...extendedMatches, ...checkDirections(blocks, row, column)];
-    }
-    const removeDuplicates = extendedMatches.filter(
-      (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
-    );
-    console.log('TCL: getExtentedMatches -> final', removeDuplicates);
-  };
+  let allMatches = [];
+  for (let i = 0; i < matches.length; i += 1) {
+    const { row, column } = matches[i];
+    allMatches = [...matches, ...allMatches, ...checkDirections(blocks, row, column)];
+  }
 
-  getExtendedMatches();
+  // remove duplicates
+  allMatches = allMatches.filter(
+    (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
+  );
+
+  for (let i = 0; i < allMatches.length; i += 1) {
+    const { row, column } = allMatches[i];
+    blocks[row][column].color = 'white';
+    fillEmptyBlocksFrom(blocks);
+  }
+
+  dispatch({ type: DELETE_CLICKED_BLOCKS, payload: allMatches });
 };
 
 // };
