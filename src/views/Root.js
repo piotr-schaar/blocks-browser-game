@@ -7,11 +7,9 @@ import store from 'store';
 
 const Root = () => {
   return (
-    <Provider store={store}>
-      <MainTemplate>
-        <GamePage />
-      </MainTemplate>
-    </Provider>
+    <MainTemplate>
+      <GamePage />
+    </MainTemplate>
   );
 };
 

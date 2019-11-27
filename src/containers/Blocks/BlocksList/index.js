@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import useBlocks from 'hooks/blocks/useBlocks';
 
 import Block from 'containers/Blocks/BlockElement';
 
@@ -20,7 +20,8 @@ const StyledBlockList = styled.div`
 `;
 
 const BlocksList = () => {
-  const { blocks } = useSelector(({ BlocksReducer }) => BlocksReducer);
+  const [blocks] = useBlocks();
+
   return (
     <MainWrapper>
       <BlocksWrapper>

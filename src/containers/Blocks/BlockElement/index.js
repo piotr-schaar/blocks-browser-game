@@ -1,16 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-
-import { checkBoxesMatches } from 'store/blocks/Blocks.actions';
+import useBlocks from 'hooks/blocks/useBlocks';
 
 import Block from 'components/Block';
 
 const BlockElement = ({ id, color, arrayIndex, elementIndex }) => {
-  const dispatch = useDispatch();
+  const [blocks, possibleMove, handleClickOnBlock] = useBlocks();
 
-  const handleBlockClick = () => dispatch(checkBoxesMatches(arrayIndex, elementIndex));
-
-  return <Block color={color} onClick={handleBlockClick} />;
+  return <Block color={color} onClick={() => handleClickOnBlock(arrayIndex, elementIndex)} />;
 };
 
 export default BlockElement;
