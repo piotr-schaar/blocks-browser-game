@@ -3,7 +3,6 @@ import {
   CREATE_BLOCKS_BOARD,
   RESET_BLOCKS_BOARD,
   CHECK_POSSIBILITY,
-  UPDATE_COLOR_CLICKED_BLOCKS,
   DELETE_CLICKED_BLOCKS,
   UPDATE_BOARD,
   INCREASE_SCORE_POINTS,
@@ -15,14 +14,13 @@ import { getRandomColor } from 'helpers/functions';
 
 export const createBlocks = () => dispatch => {
   const generateBlocksBoard = () => {
-    const boxColors = Object.values(colors);
     let board = [];
     for (let j = 0; j < rows; j += 1) {
       let blocksRow = [];
       for (let i = 0; i < columns; i += 1) {
         const newColor = {
           id: uuid(),
-          color: getRandomColor(boxColors),
+          color: getRandomColor(colors),
         };
         blocksRow = [...blocksRow, newColor];
       }
@@ -40,6 +38,7 @@ const checkMatchingDirections = (board, r, c) => {
   const left = board[r][c - 1] !== undefined && { row: r, column: c - 1 };
   const right = board[r][c + 1] !== undefined && { row: r, column: c + 1 };
 
+  // filter for edge blocks and finding match color
   const directionsWithMatches = [top, bottom, left, right]
     .filter(dir => dir instanceof Object)
     .filter(({ row, column }) => board[row][column].color === board[r][c].color);
@@ -64,29 +63,30 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   };
 
   getDirections();
-
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 
 const fillWithColorEmptyBlocksFromTop = blocks => {
   const board = blocks;
 
+  // problem here
   const getUpperColor = () => {
     for (let j = 1; j < rows; j += 1) {
       for (let i = 0; i < columns; i += 1) {
         if (board[j][i].color === 'white') {
+          console.log(board[j][i]);
           board[j][i].color = blocks[j - 1][i].color;
           board[j - 1][i].color = 'white';
         }
       }
     }
-    // eslint-disable-next-line no-restricted-syntax
-    for (const element of board[0]) {
-      if (element.color === 'white') {
-        const boxColors = Object.values(colors);
-        element.color = getRandomColor(boxColors);
+
+    const [firstRow] = board;
+    firstRow.map(block => {
+      if (block.color === 'white') {
+        block.color = getRandomColor(colors);
       }
-    }
+    });
   };
 
   for (let j = 1; j < rows; j += 1) {
@@ -103,33 +103,30 @@ export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getSta
   const matches = checkMatchingDirections(blocks, arrayIndex, elementIndex);
 
   let allMatchingBlocks = [];
-  for (let i = 0; i < matches.length; i += 1) {
-    const { row, column } = matches[i];
+
+  matches.map(({ row, column }) => {
     allMatchingBlocks = [
       ...matches,
       ...allMatchingBlocks,
       ...checkMatchingDirections(blocks, row, column),
     ];
-  }
+  });
 
   // remove duplicates
   allMatchingBlocks = allMatchingBlocks.filter(
     (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
   );
 
-  for (let i = 0; i < allMatchingBlocks.length; i += 1) {
-    const { row, column } = allMatchingBlocks[i];
+  allMatchingBlocks.map(({ row, column }) => {
     blocks[row][column].color = 'white';
     dispatch({
       type: INCREASE_SCORE_POINTS,
     });
-
-    const newBoard = fillWithColorEmptyBlocksFromTop(blocks);
     dispatch({
       type: UPDATE_BOARD,
-      payload: newBoard,
+      payload: fillWithColorEmptyBlocksFromTop(blocks),
     });
-  }
+  });
 
   dispatch({
     type: DELETE_CLICKED_BLOCKS,
