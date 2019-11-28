@@ -7,13 +7,11 @@ import {
 } from 'store/blocks/Blocks.types';
 import colors from 'utils/boxColors';
 
-const getRandomColor = colorsArr => colorsArr[Math.floor(Math.random() * colorsArr.length)];
+import { columns, rows } from 'helpers/constants';
+import { getRandomColor } from 'helpers/functions';
 
-const columns = 12;
-const rows = 6;
-
-export const createBlocks = (startGame = true) => dispatch => {
-  const generateBlocks = () => {
+export const createBlocks = () => dispatch => {
+  const generateBlocksBoard = () => {
     const boxColors = Object.values(colors);
     let board = [];
     for (let j = 0; j < rows; j += 1) {
@@ -30,13 +28,10 @@ export const createBlocks = (startGame = true) => dispatch => {
     return board;
   };
 
-  // generating blocks based on startGame condition
-  if (startGame) {
-    dispatch({ type: RESET_BLOCKS_BOARD });
-    dispatch({ type: CREATE_BLOCKS_BOARD, payload: generateBlocks() });
-  }
+  dispatch({ type: RESET_BLOCKS_BOARD });
+  dispatch({ type: CREATE_BLOCKS_BOARD, payload: generateBlocksBoard() });
 };
-const checkDirections = (board, r, c) => {
+const checkMatchingDirections = (board, r, c) => {
   const top = board[r - 1] !== undefined && { row: r - 1, column: c };
   const bottom = board[r + 1] !== undefined && { row: r + 1, column: c };
   const left = board[r][c - 1] !== undefined && { row: r, column: c - 1 };
@@ -58,7 +53,7 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   const getDirections = () => {
     for (let j = 0; j < rows; j += 1) {
       for (let i = 0; i < columns; i += 1) {
-        if (checkDirections(blocks, j, i).length > 0) {
+        if (checkMatchingDirections(blocks, j, i).length > 0) {
           isPossibleMatches = true;
         }
       }
@@ -70,7 +65,7 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 
-const fillEmptyBlocksFrom = blocks => {
+const fillEmptyBlocksFromTop = blocks => {
   const board = blocks;
 
   const getUpperColor = () => {
@@ -82,7 +77,6 @@ const fillEmptyBlocksFrom = blocks => {
         }
       }
     }
-
     // eslint-disable-next-line no-restricted-syntax
     for (const element of board[0]) {
       if (element.color === 'white') {
@@ -102,26 +96,28 @@ export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getSta
     BlocksReducer: { blocks },
   } = getState();
 
-  const matches = checkDirections(blocks, arrayIndex, elementIndex);
+  const matches = checkMatchingDirections(blocks, arrayIndex, elementIndex);
 
-  let allMatches = [];
+  let allMatchingBlocks = [];
   for (let i = 0; i < matches.length; i += 1) {
     const { row, column } = matches[i];
-    allMatches = [...matches, ...allMatches, ...checkDirections(blocks, row, column)];
+    allMatchingBlocks = [
+      ...matches,
+      ...allMatchingBlocks,
+      ...checkMatchingDirections(blocks, row, column),
+    ];
   }
 
   // remove duplicates
-  allMatches = allMatches.filter(
+  allMatchingBlocks = allMatchingBlocks.filter(
     (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
   );
 
-  for (let i = 0; i < allMatches.length; i += 1) {
-    const { row, column } = allMatches[i];
+  for (let i = 0; i < allMatchingBlocks.length; i += 1) {
+    const { row, column } = allMatchingBlocks[i];
     blocks[row][column].color = 'white';
-    fillEmptyBlocksFrom(blocks);
+    fillEmptyBlocksFromTop(blocks);
   }
 
-  dispatch({ type: DELETE_CLICKED_BLOCKS, payload: allMatches });
+  dispatch({ type: DELETE_CLICKED_BLOCKS, payload: allMatchingBlocks });
 };
-
-// };
