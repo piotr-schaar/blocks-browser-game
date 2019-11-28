@@ -3,7 +3,10 @@ import {
   CREATE_BLOCKS_BOARD,
   RESET_BLOCKS_BOARD,
   CHECK_POSSIBILITY,
+  UPDATE_COLOR_CLICKED_BLOCKS,
   DELETE_CLICKED_BLOCKS,
+  UPDATE_BOARD,
+  INCREASE_SCORE_POINTS,
 } from 'store/blocks/Blocks.types';
 import colors from 'utils/boxColors';
 
@@ -65,7 +68,7 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 
-const fillEmptyBlocksFromTop = blocks => {
+const fillWithColorEmptyBlocksFromTop = blocks => {
   const board = blocks;
 
   const getUpperColor = () => {
@@ -89,6 +92,7 @@ const fillEmptyBlocksFromTop = blocks => {
   for (let j = 1; j < rows; j += 1) {
     getUpperColor();
   }
+  return board;
 };
 
 export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getState) => {
@@ -116,8 +120,19 @@ export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getSta
   for (let i = 0; i < allMatchingBlocks.length; i += 1) {
     const { row, column } = allMatchingBlocks[i];
     blocks[row][column].color = 'white';
-    fillEmptyBlocksFromTop(blocks);
+    dispatch({
+      type: INCREASE_SCORE_POINTS,
+    });
+
+    const newBoard = fillWithColorEmptyBlocksFromTop(blocks);
+    dispatch({
+      type: UPDATE_BOARD,
+      payload: newBoard,
+    });
   }
 
-  dispatch({ type: DELETE_CLICKED_BLOCKS, payload: allMatchingBlocks });
+  dispatch({
+    type: DELETE_CLICKED_BLOCKS,
+    payload: allMatchingBlocks,
+  });
 };

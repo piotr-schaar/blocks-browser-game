@@ -2,11 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import Heading from 'components/Layout/Heading';
 import Block from 'containers/Blocks/BlockElement';
 
 const MainWrapper = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const BlocksWrapper = styled.div`
@@ -20,9 +22,13 @@ const StyledBlockList = styled.div`
 `;
 
 const BlocksList = () => {
-  const { blocks } = useSelector(({ BlocksReducer }) => BlocksReducer);
+  const { blocks, score } = useSelector(({ BlocksReducer }) => BlocksReducer);
   return (
     <MainWrapper>
+      <Heading size="h2" bold>
+        score: {score}
+      </Heading>
+
       <BlocksWrapper>
         {blocks.map((item, index) => {
           const idx = index;
