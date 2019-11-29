@@ -66,22 +66,26 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 
-const fillWithColorEmptyBlocksFromTop = blocks => {
-  const board = blocks;
+const updateBlocksWithColors = (blocks, allMatches) => {
+  const board = [...blocks];
+  const [firstRow] = board;
 
-  // problem here
+  // coloring all matched blocks to white
+  allMatches.map(({ row, column }) => {
+    board[row][column].color = 'white';
+  });
+
   const getUpperColor = () => {
+    // getting upper color for matched blocks
     for (let j = 1; j < rows; j += 1) {
       for (let i = 0; i < columns; i += 1) {
         if (board[j][i].color === 'white') {
-          console.log(board[j][i]);
           board[j][i].color = blocks[j - 1][i].color;
           board[j - 1][i].color = 'white';
         }
       }
     }
-
-    const [firstRow] = board;
+    // generating new colors for first row in board
     firstRow.map(block => {
       if (block.color === 'white') {
         block.color = getRandomColor(colors);
@@ -89,6 +93,7 @@ const fillWithColorEmptyBlocksFromTop = blocks => {
     });
   };
 
+  // loop above function for all blocks
   for (let j = 1; j < rows; j += 1) {
     getUpperColor();
   }
@@ -117,15 +122,15 @@ export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getSta
     (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
   );
 
-  allMatchingBlocks.map(({ row, column }) => {
-    blocks[row][column].color = 'white';
-    dispatch({
-      type: INCREASE_SCORE_POINTS,
-    });
-    dispatch({
-      type: UPDATE_BOARD,
-      payload: fillWithColorEmptyBlocksFromTop(blocks),
-    });
+  const boardWithUpdatedBlocks = updateBlocksWithColors(blocks, allMatchingBlocks);
+
+  dispatch({
+    type: INCREASE_SCORE_POINTS,
+    payload: allMatchingBlocks.length,
+  });
+  dispatch({
+    type: UPDATE_BOARD,
+    payload: boardWithUpdatedBlocks,
   });
 
   dispatch({

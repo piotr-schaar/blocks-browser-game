@@ -32,7 +32,7 @@ const blocksReducer = (state = INITIAL_STATE, action) => {
     case INCREASE_SCORE_POINTS:
       return {
         ...state,
-        score: state.score + 1,
+        score: state.score + action.payload,
       };
 
     case UPDATE_BOARD:
