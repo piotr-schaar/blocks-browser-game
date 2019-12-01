@@ -5,7 +5,6 @@ const Block = styled.div`
   width: 70px;
   background-color: ${({ color }) => color};
   cursor: pointer;
-  transition: all 1s;
   &:hover,
   &:active {
     border: 2px solid ${({ theme }) => theme.colors.whiteColor};

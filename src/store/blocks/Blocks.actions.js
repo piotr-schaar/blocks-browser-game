@@ -110,11 +110,8 @@ export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getSta
   let allMatchingBlocks = [];
 
   matches.map(({ row, column }) => {
-    allMatchingBlocks = [
-      ...matches,
-      ...allMatchingBlocks,
-      ...checkMatchingDirections(blocks, row, column),
-    ];
+    const restMatches = checkMatchingDirections(blocks, row, column);
+    allMatchingBlocks = [...matches, ...allMatchingBlocks, ...restMatches];
   });
 
   // remove duplicates
