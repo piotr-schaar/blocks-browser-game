@@ -100,20 +100,21 @@ const updateBlocksWithColors = (blocks, allMatches) => {
   return board;
 };
 
-export const checkBoxesMatches = (arrayIndex, elementIndex) => (dispatch, getState) => {
+export const checkBoxesMatches = (y, x) => (dispatch, getState) => {
   const {
     BlocksReducer: { blocks },
   } = getState();
 
-  const matches = checkMatchingDirections(blocks, arrayIndex, elementIndex);
-
   let allMatchingBlocks = [];
+
+  const matches = checkMatchingDirections(blocks, y, x);
 
   matches.map(({ row, column }) => {
     const restMatches = checkMatchingDirections(blocks, row, column);
     allMatchingBlocks = [...matches, ...allMatchingBlocks, ...restMatches];
   });
 
+  //  za kazdym razem jak pcham nowe matche do tablicy z matchami wykonuje na nich funckcje szukajaca kolejnych maczy, jakos trzeba wykombinowac jak to nasluchiwac
   // remove duplicates
   allMatchingBlocks = allMatchingBlocks.filter(
     (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
