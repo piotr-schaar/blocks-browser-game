@@ -103,18 +103,37 @@ const updateBlocksWithColors = (blocks, allMatches) => {
 };
 
 export const checkBoxesMatches = (y, x) => (dispatch, getState) => {
+  let allMatchingBlocks = [];
+  const findMatchingAndTouching = (board, r, c) => {
+    if (allMatchingBlocks.filter(block => block.row === r && block.column === c).length) return;
+    const top = board[r - 1] !== undefined && { row: r - 1, column: c };
+    const bottom = board[r + 1] !== undefined && { row: r + 1, column: c };
+    const left = board[r][c - 1] !== undefined && { row: r, column: c - 1 };
+    const right = board[r][c + 1] !== undefined && { row: r, column: c + 1 };
+
+    // filter for edge blocks and finding match color
+    const directionsWithMatches = [top, bottom, left, right]
+      .filter(dir => dir instanceof Object)
+      .filter(({ row, column }) => board[row][column].color === board[r][c].color);
+    allMatchingBlocks.push({ row: r, column: c });
+    directionsWithMatches.map(block => {
+      findMatchingAndTouching(board, block.row, block.column);
+    });
+  };
   const {
     BlocksReducer: { blocks },
   } = getState();
 
-  let allMatchingBlocks = [];
+  //let allMatchingBlocks = [];
 
-  const matches = checkMatchingDirections(blocks, y, x);
+  findMatchingAndTouching(blocks, y, x);
+  //console.log(saved);
+  //return;
 
-  matches.map(({ row, column }) => {
+  /*matches.map(({ row, column }) => {
     const restMatches = checkMatchingDirections(blocks, row, column);
     allMatchingBlocks = [...matches, ...allMatchingBlocks, ...restMatches];
-  });
+  });*/
 
   allMatchingBlocks = allMatchingBlocks.filter(
     (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
