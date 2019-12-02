@@ -4,12 +4,14 @@ import {
   CHECK_POSSIBILITY,
   INCREASE_SCORE_POINTS,
   UPDATE_BOARD,
+  POINT_TRIGGER,
 } from 'store/blocks/Blocks.types';
 
 const INITIAL_STATE = {
   possiblesMovies: false,
   blocks: [],
   score: 0,
+  matches: [],
 };
 
 const blocksReducer = (state = INITIAL_STATE, action) => {
@@ -29,6 +31,12 @@ const blocksReducer = (state = INITIAL_STATE, action) => {
         ...state,
         possiblesMovies: action.payload,
       };
+    case POINT_TRIGGER:
+      return {
+        ...state,
+        matches: action.payload,
+      };
+
     case INCREASE_SCORE_POINTS:
       return {
         ...state,

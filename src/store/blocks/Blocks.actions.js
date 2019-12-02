@@ -6,6 +6,7 @@ import {
   DELETE_CLICKED_BLOCKS,
   UPDATE_BOARD,
   INCREASE_SCORE_POINTS,
+  POINT_TRIGGER,
 } from 'store/blocks/Blocks.types';
 import colors from 'utils/boxColors';
 
@@ -114,11 +115,14 @@ export const checkBoxesMatches = (y, x) => (dispatch, getState) => {
     allMatchingBlocks = [...matches, ...allMatchingBlocks, ...restMatches];
   });
 
-  //  za kazdym razem jak pcham nowe matche do tablicy z matchami wykonuje na nich funckcje szukajaca kolejnych maczy, jakos trzeba wykombinowac jak to nasluchiwac
-  // remove duplicates
   allMatchingBlocks = allMatchingBlocks.filter(
     (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
   );
+
+  dispatch({
+    type: POINT_TRIGGER,
+    payload: allMatchingBlocks,
+  });
 
   const boardWithUpdatedBlocks = updateBlocksWithColors(blocks, allMatchingBlocks);
 
