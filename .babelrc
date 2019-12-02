@@ -1,5 +1,9 @@
 {
-  "plugins": [
-      "babel-plugin-transform-class-properties"
-  ]
+  "env": {
+    "test": {
+      "presets": [
+        ["preact-cli/babel", { "modules": "commonjs" }]
+      ]
+    }
+  }
 }

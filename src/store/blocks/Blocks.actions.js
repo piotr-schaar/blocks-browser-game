@@ -7,11 +7,12 @@ import {
   UPDATE_BOARD,
   INCREASE_SCORE_POINTS,
   POINT_TRIGGER,
-} from 'store/blocks/Blocks.types';
-import colors from 'utils/boxColors';
+} from './Blocks.types';
 
-import { columns, rows } from 'helpers/constants';
-import { getRandomColor } from 'helpers/functions';
+import colors from '../../utils/boxColors';
+
+import { columns, rows } from '../../helpers/constants';
+import { getRandomColor } from '../../helpers/functions';
 
 export const createBlocks = () => dispatch => {
   const generateBlocksBoard = () => {

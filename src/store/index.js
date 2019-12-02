@@ -1,8 +1,9 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import BlocksReducer from 'store/blocks/Blocks.reducer';
+import BlocksReducer from './blocks/Blocks.reducer';
 
 const middlewares = [thunk];
 

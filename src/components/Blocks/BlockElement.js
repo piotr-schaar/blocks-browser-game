@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'preact/hooks';
+
 import styled, { keyframes } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { checkBoxesMatches } from '../../store/blocks/Blocks.actions';
 
-import { checkBoxesMatches } from 'store/blocks/Blocks.actions';
-
-import Block from 'components/Block';
+import Block from '../Layout/Block';
 
 const animationFadeOut = keyframes`
   to {

@@ -5,7 +5,7 @@ import {
   INCREASE_SCORE_POINTS,
   UPDATE_BOARD,
   POINT_TRIGGER,
-} from 'store/blocks/Blocks.types';
+} from './Blocks.types';
 
 const INITIAL_STATE = {
   possiblesMovies: false,

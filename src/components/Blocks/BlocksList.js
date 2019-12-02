@@ -1,9 +1,8 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import Heading from 'components/Layout/Heading';
-import Block from 'containers/Blocks/BlockElement';
+import { Heading } from '../Layout';
+import Block from './BlockElement';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -28,7 +27,6 @@ const BlocksList = () => {
       <Heading size="h2" bold>
         score: {score}
       </Heading>
-
       <BlocksWrapper>
         {blocks.map((item, index) => {
           const idx = index;

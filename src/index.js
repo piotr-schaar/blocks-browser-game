@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Root from 'views/Root';
+import App from "./components/app";
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+export default App;

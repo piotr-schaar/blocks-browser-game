@@ -1,4 +1,4 @@
-import React from 'react';
+import { h } from 'preact';
 import styled, { css } from 'styled-components';
 
 const baseStyle = css`
