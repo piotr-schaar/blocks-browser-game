@@ -1,22 +1,30 @@
-# blocks
+# The Blocks Game
 
-## CLI Commands
+A simple Candy Crush type browser game created with preact and redux
 
+[live version](https://eager-jennings-2fc9eb.netlify.com)
+
+## Requirements
+
+ * [node.js](https://nodejs.org/)
+ * [npm](https://www.npmjs.com/)
+ * [yarn](https://yarnpkg.com/)
+
+## Installation commands
 ``` bash
+# instal preact-cli
+npm install -g preact-cli
+
 # install dependencies
-npm install
+yarn
 
 # serve with hot reload at localhost:8080
-npm run dev
+yarn run dev
 
 # build for production with minification
-npm run build
+yarn run build
 
-# test the production build locally
-npm run serve
+# app develop url
+http://localhost:8080/
 
-# run tests with jest and preact-render-spy 
-npm run test
 ```
-
-For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).

@@ -4,7 +4,6 @@ const theme = {
     mainDark: '#21283e',
     whiteColor: '#ffffff',
     greyColor: '#e0e0e0',
-    shadow: 'rgba(0,0,0,.2)',
   },
   mediaQueries: {
     smallest: `only screen and (max-width: 25em)`,

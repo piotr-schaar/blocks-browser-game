@@ -21,12 +21,6 @@ export default createGlobalStyle`
      --color-grey: ${({ theme }) => theme.colors.greyColor};
 
     }
-    @media ${({ theme }) => theme.mediaQueries.small} {
-        font-size: 60%;
-    }
-    @media ${({ theme }) => theme.mediaQueries.smaller} {
-        font-size: 55%;
-    }
     body {
         font-family: 'Roboto', sans-serif;
         font-weight: 400;
