@@ -2,7 +2,7 @@
 
 A simple Candy Crush type browser game created with preact and redux
 
-[live version](https://eager-jennings-2fc9eb.netlify.com)
+Live: [live version](https://eager-jennings-2fc9eb.netlify.com)
 
 ## Requirements
 
@@ -18,7 +18,7 @@ npm install -g preact-cli
 # install dependencies
 yarn
 
-# serve with hot reload at localhost:8080
+# development mode
 yarn run dev
 
 # build for production with minification
