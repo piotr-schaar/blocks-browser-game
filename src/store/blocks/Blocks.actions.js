@@ -112,8 +112,10 @@ export const checkBoxesMatches = (y, x) => (dispatch, getState) => {
     const currentCheckingBlock = { row: r, column: c };
     const directionsWithMatches = checkMatchingDirections(board, r, c);
 
-    allMatchingBlocks.push(currentCheckingBlock);
-    directionsWithMatches.map(({ row, column }) => findMatchingAndTouching(board, row, column));
+    if (directionsWithMatches.length) {
+      allMatchingBlocks.push(currentCheckingBlock);
+      directionsWithMatches.map(({ row, column }) => findMatchingAndTouching(board, row, column));
+    }
   };
 
   const {

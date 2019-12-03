@@ -40,6 +40,7 @@ const BlocksList = () => {
       <Heading size="h2" bold>
         score: {score}
       </Heading>
+
       <BlocksWrapper>
         {blocks.map((item, index) => {
           const idx = index;

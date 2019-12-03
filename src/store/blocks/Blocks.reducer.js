@@ -8,7 +8,7 @@ import {
 } from './Blocks.types';
 
 const INITIAL_STATE = {
-  possiblesMovies: false,
+  possiblesMoves: false,
   blocks: [],
   score: 0,
   matches: [],
@@ -29,7 +29,7 @@ const blocksReducer = (state = INITIAL_STATE, action) => {
     case CHECK_POSSIBILITY:
       return {
         ...state,
-        possiblesMovies: action.payload,
+        possiblesMoves: action.payload,
       };
     case POINT_TRIGGER:
       return {
