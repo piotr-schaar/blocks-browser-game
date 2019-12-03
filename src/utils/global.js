@@ -14,14 +14,12 @@ export default createGlobalStyle`
     html {
      font-size: 62.5%;
      box-sizing: border-box;
-     --color-main: ${({ theme }) => theme.colors.main}  ;
-     --color-mainDark:  ${({ theme }) => theme.colors.mainDark};
-     --color-mainLight:  ${({ theme }) => theme.colors.mainLight};
-     --color-mainLighter: ${({ theme }) => theme.colors.mainLighter};
+     --color-main: ${({ theme }) => theme.colors.main};
+     --color-mainDark: ${({ theme }) => theme.colors.mainDark} 
      --color-text: ${({ theme }) => theme.colors.textColor};  
      --color-white: ${({ theme }) => theme.colors.whiteColor};
-     --color-errorRed: ${({ theme }) => theme.colors.errorRed}
-     --shadow: ${({ theme }) => theme.colors.shadow}
+     --color-grey: ${({ theme }) => theme.colors.greyColor};
+
     }
     @media ${({ theme }) => theme.mediaQueries.small} {
         font-size: 60%;

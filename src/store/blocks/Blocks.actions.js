@@ -33,6 +33,7 @@ export const createBlocks = () => dispatch => {
 
   dispatch({ type: RESET_BLOCKS_BOARD });
   dispatch({ type: CREATE_BLOCKS_BOARD, payload: generateBlocksBoard() });
+  checkAllBlocksForPossibleMatches();
 };
 
 const checkMatchingDirections = (board, r, c) => {
@@ -66,7 +67,6 @@ export const checkAllBlocksForPossibleMatches = () => (dispatch, getState) => {
   };
 
   checkDirectionsToFindAnyPossibleMatches();
-  console.log(isPossibleMatches);
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 

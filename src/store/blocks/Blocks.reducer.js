@@ -8,7 +8,7 @@ import {
 } from './Blocks.types';
 
 const INITIAL_STATE = {
-  possiblesMoves: false,
+  possiblesMoves: true,
   blocks: [],
   score: 0,
   matches: [],

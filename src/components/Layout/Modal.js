@@ -4,15 +4,19 @@ const MainWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
+  padding: 2rem;
   z-index: 10;
   transform: translate(-50%, -50%);
-  width: 50rem;
-  height: 20rem;
-  background: lightGray;
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: #f3f3f3;
 `;
 
 const Modal = ({ children }) => {
-  return <MainWrapper>MODAL</MainWrapper>;
+  return <MainWrapper>{children}</MainWrapper>;
 };
 
 export default Modal;

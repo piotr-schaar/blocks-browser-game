@@ -37,7 +37,7 @@ const BlocksList = () => {
 
   return (
     <MainWrapper>
-      <Heading size="h2" bold>
+      <Heading smallPadding size="h2" bold>
         score: {score}
       </Heading>
 
