@@ -12,7 +12,7 @@ A simple Candy Crush type browser game created with preact and redux
 
 ## Installation commands
 ``` bash
-# instal preact-cli
+# install preact-cli
 npm install -g preact-cli
 
 # install dependencies
