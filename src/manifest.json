@@ -1,6 +1,6 @@
 {
-  "name": "blocks",
-  "short_name": "blocks",
+  "name": "Blocks",
+  "short_name": "Blocks",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

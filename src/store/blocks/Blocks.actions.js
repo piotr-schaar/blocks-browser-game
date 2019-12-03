@@ -34,6 +34,7 @@ export const createBlocks = () => dispatch => {
   dispatch({ type: RESET_BLOCKS_BOARD });
   dispatch({ type: CREATE_BLOCKS_BOARD, payload: generateBlocksBoard() });
 };
+
 const checkMatchingDirections = (board, r, c) => {
   const top = board[r - 1] !== undefined && { row: r - 1, column: c };
   const bottom = board[r + 1] !== undefined && { row: r + 1, column: c };
@@ -47,14 +48,14 @@ const checkMatchingDirections = (board, r, c) => {
 
   return directionsWithMatches;
 };
-export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
+export const checkAllBlocksForPossibleMatches = () => (dispatch, getState) => {
   const {
     BlocksReducer: { blocks },
   } = getState();
 
   let isPossibleMatches = false;
 
-  const getDirections = () => {
+  const checkDirectionsToFindAnyPossibleMatches = () => {
     for (let j = 0; j < rows; j += 1) {
       for (let i = 0; i < columns; i += 1) {
         if (checkMatchingDirections(blocks, j, i).length > 0) {
@@ -64,7 +65,8 @@ export const checkAllBocksForPossibleMatches = () => (dispatch, getState) => {
     }
   };
 
-  getDirections();
+  checkDirectionsToFindAnyPossibleMatches();
+  console.log(isPossibleMatches);
   dispatch({ type: CHECK_POSSIBILITY, payload: isPossibleMatches });
 };
 
@@ -105,35 +107,20 @@ const updateBlocksWithColors = (blocks, allMatches) => {
 export const checkBoxesMatches = (y, x) => (dispatch, getState) => {
   let allMatchingBlocks = [];
   const findMatchingAndTouching = (board, r, c) => {
-    if (allMatchingBlocks.filter(block => block.row === r && block.column === c).length) return;
-    const top = board[r - 1] !== undefined && { row: r - 1, column: c };
-    const bottom = board[r + 1] !== undefined && { row: r + 1, column: c };
-    const left = board[r][c - 1] !== undefined && { row: r, column: c - 1 };
-    const right = board[r][c + 1] !== undefined && { row: r, column: c + 1 };
+    if (allMatchingBlocks.filter(({ row, column }) => row === r && column === c).length) return;
 
-    // filter for edge blocks and finding match color
-    const directionsWithMatches = [top, bottom, left, right]
-      .filter(dir => dir instanceof Object)
-      .filter(({ row, column }) => board[row][column].color === board[r][c].color);
-    allMatchingBlocks.push({ row: r, column: c });
-    directionsWithMatches.map(block => {
-      findMatchingAndTouching(board, block.row, block.column);
-    });
+    const currentCheckingBlock = { row: r, column: c };
+    const directionsWithMatches = checkMatchingDirections(board, r, c);
+
+    allMatchingBlocks.push(currentCheckingBlock);
+    directionsWithMatches.map(({ row, column }) => findMatchingAndTouching(board, row, column));
   };
+
   const {
     BlocksReducer: { blocks },
   } = getState();
 
-  //let allMatchingBlocks = [];
-
   findMatchingAndTouching(blocks, y, x);
-  //console.log(saved);
-  //return;
-
-  /*matches.map(({ row, column }) => {
-    const restMatches = checkMatchingDirections(blocks, row, column);
-    allMatchingBlocks = [...matches, ...allMatchingBlocks, ...restMatches];
-  });*/
 
   allMatchingBlocks = allMatchingBlocks.filter(
     (v, i, a) => a.findIndex(t => t.row === v.row && t.column === v.column) === i,
@@ -145,6 +132,8 @@ export const checkBoxesMatches = (y, x) => (dispatch, getState) => {
   });
 
   const boardWithUpdatedBlocks = updateBlocksWithColors(blocks, allMatchingBlocks);
+
+  checkAllBlocksForPossibleMatches();
 
   dispatch({
     type: INCREASE_SCORE_POINTS,

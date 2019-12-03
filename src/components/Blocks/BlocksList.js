@@ -1,5 +1,8 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'preact/hooks';
+
 import styled from 'styled-components';
+import { createBlocks, checkAllBlocksForPossibleMatches } from '../../store/blocks/Blocks.actions';
 
 import { Heading } from '../Layout';
 import Block from './BlockElement';
@@ -21,7 +24,17 @@ const StyledBlockList = styled.div`
 `;
 
 const BlocksList = () => {
+  const dispatch = useDispatch();
   const { blocks, score } = useSelector(({ BlocksReducer }) => BlocksReducer);
+
+  useEffect(() => {
+    dispatch(createBlocks());
+  }, []);
+
+  useEffect(() => {
+    dispatch(checkAllBlocksForPossibleMatches());
+  }, [blocks]);
+
   return (
     <MainWrapper>
       <Heading size="h2" bold>
