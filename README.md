@@ -12,8 +12,6 @@ Live: [live version](https://eager-jennings-2fc9eb.netlify.com)
 
 ## Installation commands
 ``` bash
-# install preact-cli
-npm install -g preact-cli
 
 # install dependencies
 yarn
