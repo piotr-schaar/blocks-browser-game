@@ -2,7 +2,7 @@
 
 A simple Candy Crush type browser game created with preact and redux
 
-Live: [live version](https://eager-jennings-2fc9eb.netlify.com)
+demo: [live version](https://eager-jennings-2fc9eb.netlify.com)
 
 ## Requirements
 
