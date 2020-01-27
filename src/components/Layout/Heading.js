@@ -18,18 +18,20 @@ const Heading2 = styled.h2`
 `;
 
 const Heading = ({ children, color, smallPadding, size, bold }) => {
-  if (size === 'h1')
-    return (
-      <Heading1 smallPadding={smallPadding} color={color} bold={bold}>
-        {children}
-      </Heading1>
-    );
-  if (size === 'h2')
-    return (
-      <Heading2 smallPadding={smallPadding} color={color} bold={bold}>
-        {children}
-      </Heading2>
-    );
+  switch (size) {
+    case 'h1':
+      return (
+        <Heading1 smallPadding={smallPadding} color={color} bold={bold}>
+          {children}
+        </Heading1>
+      );
+    case 'h2':
+      return (
+        <Heading2 smallPadding={smallPadding} color={color} bold={bold}>
+          {children}
+        </Heading2>
+      );
+  }
 };
 
 export default Heading;
